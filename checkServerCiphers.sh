@@ -41,15 +41,15 @@ found="Results for $1:"
 # TLS Scan
 for protocol in $protocols; do
 
-	[[ $2 == "-v" || $2 == "-vv" ]] && { echo -e "Checking:\t$protocol"; }
+	[[ $2 == "-v" || $2 == "-vv" ]] && { echo -e "Checking:\t$protocol ..."; }
 
 	for cipher in $(openssl ciphers 'ALL:eNULL' | tr ':' ' '); do
 
 		[[ $2 == "-vv" ]] && { echo -e "Checking:\t$protocol with Cipher:\t$cipher"; }
 
 		openssl s_client -connect $1 -cipher $cipher -$protocol < /dev/null > /dev/null 2>&1 && \
-        found="${found}\n$(echo -e "Protocol:\t$protocol with Cipher:\t$cipher")" && \
-        [[ $2 == "-vv" ]] && { echo -e "Found:    \t$protocol with Cipher:\t$cipher"; }
+		found="${found}\n$(echo -e "Protocol:\t$protocol with Cipher:\t$cipher")" && \
+		[[ $2 == "-vv" ]] && { echo -e "Found:    \t$protocol with Cipher:\t$cipher"; }
 
 	done
 
