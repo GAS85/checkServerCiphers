@@ -4,7 +4,7 @@
 #
 # AS-IS without any warranty
 
-protocols="ssl3 tls1 tls1_1 tls1_2 tls3"
+protocols="tls1 tls1_1 tls1_2 tls1_3"
 timeout=5
 
 while test $# -gt 0; do
