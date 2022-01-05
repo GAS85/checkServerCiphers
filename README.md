@@ -12,30 +12,33 @@ Simple Server Ciphers Scanner based on openssl.
 ## Example
 
 ```bash
-./checkServerCiphers.sh https://myserver.com:8080
-./checkServerCiphers.sh https://myserver.com -v ALL:eNULL
+./checkServerCiphers.sh -l https://myserver.com:8080
+./checkServerCiphers.sh -l https://myserver.com -v -c ALL:eNULL
 ```
 
-- `<protocol>` Could be HTTPS, FTPS, IMAPS, SMTPS, etc.
+- `<protocol>` Could be HTTPS, FTPS, IMAPS, SMTPS, etc. This is Curl only, could be HTTPS, FTPS, IMAPS, SMTPS, etc. **shuold not** be set when `-o` been used.
 - `<host>` FQDN that you need to test
 - `<port>` Port that you need to test
 
 Options:
+- `-l` Full link to test with.
+- `-o` use OpenSSL instead of Curl. Default use Curl.
 - `-v` verbose Protocol output.
 - `-vv` verbose Ciphers output.
 - `-vvv` verbose Curl output.
 
 Ciphers:
-- `ALL` Test ALL Ciphers, this is defalut setting.
-- `ALL:eNULL` Test also Ciphers with zero encryption.
-- `HIGH:MEDIUM` etc. Please refer to https://curl.se/docs/ssl-ciphers.html and https://www.openssl.org/docs/manmaster/man1/openssl-ciphers.html for more information.
+- `-c` Set Cihpers list to test, default 'ALL'. E.g.:
+- `-c ALL` Test ALL Ciphers, this is default setting.
+- `-c ALL:eNULL` Test also Ciphers with zero encryption.
+- `-c HIGH:MEDIUM` etc. Please refer to https://curl.se/docs/ssl-ciphers.html and https://www.openssl.org/docs/manmaster/man1/openssl-ciphers.html for more information.
 
 ## More Examples
 
 ### Standard output
 
 ```bash
-checkServerCiphers.sh https://git.sitnikov.ga
+checkServerCiphers.sh -l https://git.sitnikov.ga
 Now scanning:   https://git.sitnikov.ga with 'ALL' set of Ciphers
 Results for     https://git.sitnikov.ga
 Protocol:   TLSv1.2 with Cipher:    ECDHE-RSA-AES256-GCM-SHA384
@@ -49,7 +52,7 @@ Protocol:   TLSv1.3 with Cipher:    TLS_AES_128_GCM_SHA256
 ### Verbose output
 
 ```bash
-checkServerCiphers.sh https://git.sitnikov.ga -v
+checkServerCiphers.sh -l https://git.sitnikov.ga -v
 Now scanning:   https://git.sitnikov.ga with 'ALL' set of Ciphers
 Checking:   TLSv1.1 ...
 Checking:   TLSv1.2 ...
@@ -70,7 +73,7 @@ Protocol:   TLSv1.3 with Cipher:    TLS_AES_128_GCM_SHA256
 ```
 
 ```bash
-checkServerCiphers.sh https://git.sitnikov.ga -vv LOW
+checkServerCiphers.sh -l https://git.sitnikov.ga -vv -c LOW
 Now scanning:   https://git.sitnikov.ga with 'LOW' set of Ciphers
 Checking:   TLSv1.1 ...
 Following Ciphers will be tested:   
@@ -82,7 +85,7 @@ Results for     https://git.sitnikov.ga
 ```
 
 ```bash
-checkServerCiphers.sh https://git.sitnikov.ga -vv
+checkServerCiphers.sh -l https://git.sitnikov.ga -vv
 Now scanning:   https://git.sitnikov.ga with 'ALL' set of Ciphers
 Checking:   TLSv1.1 ...
 Following Ciphers will be tested:   TLS_AES_256_GCM_SHA384 TLS_CHACHA20_POLY1305_SHA256 TLS_AES_128_GCM_SHA256 ECDHE-ECDSA-AES256-GCM-SHA384 ECDHE-RSA-AES256-GCM-SHA384 DHE-DSS-AES256-GCM-SHA384 DHE-RSA-AES256-GCM-SHA384 ECDHE-ECDSA-CHACHA20-POLY1305 ECDHE-RSA-CHACHA20-POLY1305 DHE-RSA-CHACHA20-POLY1305 ECDHE-ECDSA-AES256-CCM8 ECDHE-ECDSA-AES256-CCM DHE-RSA-AES256-CCM8 DHE-RSA-AES256-CCM ECDHE-ECDSA-ARIA256-GCM-SHA384 ECDHE-ARIA256-GCM-SHA384 DHE-DSS-ARIA256-GCM-SHA384 DHE-RSA-ARIA256-GCM-SHA384 ADH-AES256-GCM-SHA384 ECDHE-ECDSA-AES128-GCM-SHA256 ECDHE-RSA-AES128-GCM-SHA256 DHE-DSS-AES128-GCM-SHA256 DHE-RSA-AES128-GCM-SHA256 ECDHE-ECDSA-AES128-CCM8 ECDHE-ECDSA-AES128-CCM DHE-RSA-AES128-CCM8 DHE-RSA-AES128-CCM ECDHE-ECDSA-ARIA128-GCM-SHA256 ECDHE-ARIA128-GCM-SHA256 DHE-DSS-ARIA128-GCM-SHA256 DHE-RSA-ARIA128-GCM-SHA256 ADH-AES128-GCM-SHA256 ECDHE-ECDSA-AES256-SHA384 ECDHE-RSA-AES256-SHA384 DHE-RSA-AES256-SHA256 DHE-DSS-AES256-SHA256 ECDHE-ECDSA-CAMELLIA256-SHA384 ECDHE-RSA-CAMELLIA256-SHA384 DHE-RSA-CAMELLIA256-SHA256 DHE-DSS-CAMELLIA256-SHA256 ADH-AES256-SHA256 ADH-CAMELLIA256-SHA256 ECDHE-ECDSA-AES128-SHA256 ECDHE-RSA-AES128-SHA256 DHE-RSA-AES128-SHA256 DHE-DSS-AES128-SHA256 ECDHE-ECDSA-CAMELLIA128-SHA256 ECDHE-RSA-CAMELLIA128-SHA256 DHE-RSA-CAMELLIA128-SHA256 DHE-DSS-CAMELLIA128-SHA256 ADH-AES128-SHA256 ADH-CAMELLIA128-SHA256 ECDHE-ECDSA-AES256-SHA ECDHE-RSA-AES256-SHA DHE-RSA-AES256-SHA DHE-DSS-AES256-SHA DHE-RSA-CAMELLIA256-SHA DHE-DSS-CAMELLIA256-SHA AECDH-AES256-SHA ADH-AES256-SHA ADH-CAMELLIA256-SHA ECDHE-ECDSA-AES128-SHA ECDHE-RSA-AES128-SHA DHE-RSA-AES128-SHA DHE-DSS-AES128-SHA DHE-RSA-SEED-SHA DHE-DSS-SEED-SHA DHE-RSA-CAMELLIA128-SHA DHE-DSS-CAMELLIA128-SHA AECDH-AES128-SHA ADH-AES128-SHA ADH-SEED-SHA ADH-CAMELLIA128-SHA RSA-PSK-AES256-GCM-SHA384 DHE-PSK-AES256-GCM-SHA384 RSA-PSK-CHACHA20-POLY1305 DHE-PSK-CHACHA20-POLY1305 ECDHE-PSK-CHACHA20-POLY1305 DHE-PSK-AES256-CCM8 DHE-PSK-AES256-CCM RSA-PSK-ARIA256-GCM-SHA384 DHE-PSK-ARIA256-GCM-SHA384 AES256-GCM-SHA384 AES256-CCM8 AES256-CCM ARIA256-GCM-SHA384 PSK-AES256-GCM-SHA384 PSK-CHACHA20-POLY1305 PSK-AES256-CCM8 PSK-AES256-CCM PSK-ARIA256-GCM-SHA384 RSA-PSK-AES128-GCM-SHA256 DHE-PSK-AES128-GCM-SHA256 DHE-PSK-AES128-CCM8 DHE-PSK-AES128-CCM RSA-PSK-ARIA128-GCM-SHA256 DHE-PSK-ARIA128-GCM-SHA256 AES128-GCM-SHA256 AES128-CCM8 AES128-CCM ARIA128-GCM-SHA256 PSK-AES128-GCM-SHA256 PSK-AES128-CCM8 PSK-AES128-CCM PSK-ARIA128-GCM-SHA256 AES256-SHA256 CAMELLIA256-SHA256 AES128-SHA256 CAMELLIA128-SHA256 ECDHE-PSK-AES256-CBC-SHA384 ECDHE-PSK-AES256-CBC-SHA SRP-DSS-AES-256-CBC-SHA SRP-RSA-AES-256-CBC-SHA SRP-AES-256-CBC-SHA RSA-PSK-AES256-CBC-SHA384 DHE-PSK-AES256-CBC-SHA384 RSA-PSK-AES256-CBC-SHA DHE-PSK-AES256-CBC-SHA ECDHE-PSK-CAMELLIA256-SHA384 RSA-PSK-CAMELLIA256-SHA384 DHE-PSK-CAMELLIA256-SHA384 AES256-SHA CAMELLIA256-SHA PSK-AES256-CBC-SHA384 PSK-AES256-CBC-SHA PSK-CAMELLIA256-SHA384 ECDHE-PSK-AES128-CBC-SHA256 ECDHE-PSK-AES128-CBC-SHA SRP-DSS-AES-128-CBC-SHA SRP-RSA-AES-128-CBC-SHA SRP-AES-128-CBC-SHA RSA-PSK-AES128-CBC-SHA256 DHE-PSK-AES128-CBC-SHA256 RSA-PSK-AES128-CBC-SHA DHE-PSK-AES128-CBC-SHA ECDHE-PSK-CAMELLIA128-SHA256 RSA-PSK-CAMELLIA128-SHA256 DHE-PSK-CAMELLIA128-SHA256 AES128-SHA SEED-SHA CAMELLIA128-SHA PSK-AES128-CBC-SHA256 PSK-AES128-CBC-SHA PSK-CAMELLIA128-SHA256
@@ -98,3 +101,7 @@ Checking:   tTLSv1.1 with Cipher:   ECDHE-RSA-CHACHA20-POLY1305
 Checking:   tTLSv1.1 with Cipher:   DHE-RSA-CHACHA20-POLY1305
 ...
 ```
+
+## Known bug
+
+It will report all Chiphers as found for `http` only connections.
